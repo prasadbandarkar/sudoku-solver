@@ -19,9 +19,17 @@ init_puzzle = [ [ x,x,x, x,1,x, x,x,4 ],
 #for i in range(9): print(init_puzzle[i])
 
 def find_candidates( puzzle: list, index: tuple) -> list :
-    (i,j) = index
-
-    return 0
+    i,j = int(index[0]) , int(index[1])
+    candidate_list=[]
+    if puzzle[i][j] == 'x':
+        for candidate in range(1,10):
+            if candidate not in entire_row(puzzle=puzzle , index=(i,j)):
+                if candidate not in entire_column(puzzle=puzzle , index=(i,j)):
+                    if candidate not in entire_box(puzzle=puzzle, index=(i,j)):
+                        candidate_list.append(candidate)
+    else:
+        candidate_list.append(puzzle[i][j])
+    return candidate_list
 
 def entire_row( puzzle: list, index: tuple) -> list:
     (i,j) = int(index[0]), int(index[1])
@@ -36,12 +44,17 @@ def entire_box(puzzle: list, index: tuple) -> list:
     i,j = int(index[0]), int(index[1])
     rows = list(range(3*(i//3),3*(i//3)+3))
     cols = list(range(3*(j//3),3*(j//3)+3))
-    print(rows)
-    print(cols)
-    print((i,j))
+    #print(rows)
+    #print(cols)
+    #print((i,j))
     box = [ puzzle[x][y] for x in rows for y in cols ]
     return box
 
-print(entire_box(init_puzzle,(0,8)))
+#print( find_candidates(puzzle=init_puzzle,index=(0,8)) )
+all_candidates = [ [ find_candidates(puzzle=init_puzzle,index=(i,j)) for j in range(9) ] for i in range(9)  ]
+
+for i in range(9): print(all_candidates[i])
+
+#print(entire_box(init_puzzle,(0,8)))
 #num=5
 #print( [ i for i in range( 3*(num//3)+1,3*(num//3)+4) ] )
